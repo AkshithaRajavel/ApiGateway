@@ -1,14 +1,26 @@
 const express = require('express');
+const proxy = require('express-http-proxy');
 const app = express();
-const request = require('request')
 const cookieParser = require('cookie-parser');
-const axios = require('axios');
-const AppPorts = require('./AppRegistry')
-app.use(cookieParser())
+var bodyParser = require('body-parser')
+const AppPorts = require('./AppRegistry');
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+//middleware
+function mid(req,res,next){
+    req.url = '/'+req.cookies['AppName']+req.url;
+    next();
+}
 //route handler
 app.get('/setApp',(req,res)=>{
-    const AppName = req.query.AppName;
-    console.log(AppName);
+    res.sendFile('C:\\Users\\AKSHITHA\\Desktop\\wise_works\\Gateway\\index.html');
+})
+app.get('/setApp/:AppName',(req,res)=>{
+    const AppName = req.params.AppName;
     if(AppName in AppPorts.Apps){
     res.cookie('AppName',AppName);
     res.redirect('/');}
@@ -16,16 +28,9 @@ app.get('/setApp',(req,res)=>{
         res.send("<h1>404 Not Found</h1>")
     }
 })
-delete axios.defaults.headers.common["Authorization"];
-app.all('*',(req,res)=>{
-    if(!req.cookies.AppName)return res.redirect('/setApp');
-    const AppName = req.cookies.AppName;
-    request('http://127.0.0.1:'+AppPorts.Apps[AppName]+req.path,
-    (error,response,body)=>{
-        res.set(response.headers);
-        res.send(body);
-    });
-})
+app.use('/',mid);
+for(var App in AppPorts.Apps)
+app.use(`/${App}`,proxy(`http://127.0.0.1:${AppPorts.Apps[App]}`));
 //start gateway
 port = process.argv[2];
 app.listen(port,()=>console.log(`Apigateway started on port ${port}`));
