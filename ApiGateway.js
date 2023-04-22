@@ -1,5 +1,6 @@
 const express = require('express');
 const proxy = require('express-http-proxy');
+const path = require('path');
 const app = express();
 const cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser')
@@ -17,7 +18,7 @@ function mid(req,res,next){
 }
 //route handler
 app.get('/setApp',(req,res)=>{
-    res.sendFile('C:\\Users\\AKSHITHA\\Desktop\\wise_works\\Gateway\\index.html');
+    res.sendFile(path.join(__dirname, '/index.html'));
 })
 app.get('/setApp/:AppName',(req,res)=>{
     const AppName = req.params.AppName;
