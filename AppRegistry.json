@@ -1,8 +1,8 @@
 
 {
     "Apps" : {
-        "ProjectA" : "5000",
-        "ProjectB" : "4000",
-        "ProjectC": "8000"
+        "ProjectA" : "http://localhost:5000",
+        "ProjectB" : "http://localhost:4000",
+        "ProjectC" : "http://localhost:8000"
     }
 }

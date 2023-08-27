@@ -12,7 +12,6 @@ app.set("view engine",'ejs');
 
 //env variables
 PORT = 80;
-BASE_URL = "http://localhost"
 
 //custom middleware and common handlers
 const setApp = (req,res)=>{
@@ -33,7 +32,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use('/',home);
 for(var App in AppRegistry.Apps)
-app.use(`/${App}`,proxy(`${BASE_URL}:${AppRegistry.Apps[App]}`));
+app.use(`/${App}`,proxy(`${AppRegistry.Apps[App]}`));
 
 //route handler
 app.get('/setApp',setApp)
