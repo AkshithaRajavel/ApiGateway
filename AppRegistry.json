@@ -1,7 +1,8 @@
 
 {
     "Apps" : {
-        "WeatherApp" : "5000",
-        "BlogPlatform" : "4000"
+        "ProjectA" : "5000",
+        "ProjectB" : "4000",
+        "ProjectC": "8000"
     }
 }
